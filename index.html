@@ -1,0 +1,166 @@
+<html>
+  <head>
+    <script src="https://api.mqcdn.com/sdk/place-search-js/v1.0.0/place-search.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/place-search-js/v1.0.0/place-search.css"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css"/>
+
+    <script type="text/javascript">
+      window.onload = function() {
+        let ps = placeSearch({
+          key: '1hJo8hXlcYlsDGN1m9Ezs3GAp5bSGAPE',
+          container: document.querySelector('#search-input'),
+          useDeviceLocation: true,
+          collection: [
+            'category',
+            'franchise'
+          ],
+        });
+
+        L.mapquest.key = '1hJo8hXlcYlsDGN1m9Ezs3GAp5bSGAPE';
+
+        var map = L.mapquest.map('map', {
+          center: [-23.5614091,-46.6580706],
+          layers: L.mapquest.tileLayer('map'),
+          zoom: 15
+        });
+
+        L.mapquest.control().addTo(map);
+
+        let searchLayer = null;
+
+        ps.on('change', (e) => {
+
+          if (e.result.type === 'hotel' || e.result.type === 'restaurants') {
+            let search = L.mapquest.search();
+            search.place({
+              category: `sic:${e.result.sic[0]}`,
+              sort: 'relevance',
+              bbox: map.getBounds(),
+              pageSize: 18
+            }, handleSearch);
+          }
+        });
+
+        function handleSearch(err, data) {
+          if (searchLayer) {
+            map.removeLayer(searchLayer);
+          }
+
+          searchLayer = L.mapquest.searchLayer({
+            searchResponse: data
+          });
+          map.addLayer(searchLayer);
+        }
+
+        ps.on('clear', () => {
+          if (searchLayer) {
+            map.removeLayer(searchLayer);
+          }
+          searchLayer = null;
+          map.setView(new L.LatLng(-23.5614091,-46.6580706), 5);
+        });
+
+        ps.on('error', (e) => {
+          console.log(e);
+        });
+      }
+    </script>
+  </head>
+
+  <header>
+      <nav class="navbar bg-light ms-3">
+        <div class="d-flex flex-row bd-highlight mb-3" width="60px">
+            <img src="/IMG/Logo_trans_branco.png" width="60px" height="60px">
+            <p class="logo">Traveller</p>
+        </div>
+
+<aside>
+        <div>
+        <form class="d-flex justify-content-end">
+            <input class="form-control mb-5 mt-5" type="search" aria-label="Search">
+            <button class="btn btn-secondary btn-md mb-5 ms-1 mt-5" type="submit">Buscar</button>
+            <button type="button" class="btn btn-secondary btn-md mb-5 ms-1 mt-5" style="white-space: nowrap">Cadastre-se</button>
+            <button type="button" class="btn btn-secondary btn-md mb-5 ms-1 mt-5">Login</button>
+            </form>
+        </div>
+  </aside>
+        </nav>
+    
+
+        <div class="d-flex gap-4 justify-content-center">
+            <a href="#" class="btn btn-secondary btn-lg">Hospedagem</a>
+            <a href="#" class="btn btn-secondary btn-lg">Gastronomia</a>
+            <a href="#" class="btn btn-secondary btn-lg">Aluguel de Carro</a>
+            <a href="#" class="btn btn-secondary btn-lg">O que fazer</a>
+        </div>
+  </header>
+  <div>
+    <br>
+  </div>
+  
+  <body>
+      <section class="hero">
+        <p class="hero-title d-flex justify-content-center">Conheça o melhor do Brasil e do mundo</p>
+      </section>
+    
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    
+        <p class="texto text-center mt-5">os pontos turístico mais visitados pelos nossos travellers</p>
+    
+        <div class="row my-5">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-3 my-3">
+                <div class="card">
+                    <img src="/IMG/ibira.jpg" class="card-img-top" alt="Parque do Ibirapuera">
+                    <div class="card-body">
+                        <h5 class="card-title">Parque do Ibirapuera</h5>
+                        <a href="#" class="btn btn-secondary">Saiba mais</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-12 col-md-6 col-lg-3 my-3">
+                <div class="card">
+                    <img src="/IMG/paulistaav.jpg" class="card-img-top" alt="Avenida Paulista">
+                    <div class="card-body">
+                        <h5 class="card-title">Avenida Paulista</h5>
+                        <a href="#" class="btn btn-secondary">Saiba mais</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-12 col-md-6 col-lg-3 my-3">
+                <div class="card">
+                    <img src="/IMG/luz.jpg" class="card-img-top" alt="Estação da Luz">
+                    <div class="card-body">
+                        <h5 class="card-title">Estação da Luz</h5>
+                        <a href="#" class="btn btn-secondary">Saiba mais</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-12 col-md-6 col-lg-3 my-3">
+                <div class="card">
+                    <img src="/IMG/centro.jpg" class="card-img-top" alt="Centro de São Paulo">
+                    <div class="card-body">
+                        <h5 class="card-title">Centro de São Paulo</h5>
+                        <a href="#" class="btn btn-secondary">Saiba mais</a>
+                    </div>    
+                </div>
+            </div>
+    <section>
+      <p class="texto text-center mt-5">os hóteis e restaurantes mais famosos de São Paulo</p>
+    </section>
+          
+    <div id="map" style="width: 100%; height: 530px;"></div>
+    <input type="search" id="search-input" placeholder="Procure por hotéis ou restaurantes..." />
+  
+  <footer>
+    FIAP - Fase 5 - Atividade Cap. 10 - Aplicações em Cloud Computing
+    <br>
+    Desenvolvido por Cinthia Matsuda
+  </footer>
+  </body>
+</html>
